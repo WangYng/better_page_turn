@@ -16,4 +16,9 @@ public class BetterPageTurnPlugin implements FlutterPlugin {
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
 
   }
+
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+
+  }
 }
