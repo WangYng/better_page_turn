@@ -112,7 +112,7 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
               Transform(
                 alignment: Alignment.center,
                 transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.001)
+                  ..setEntry(3, 2, 0.0001)
                   ..rotateY(angle),
                 child: Transform(
                   alignment: Alignment.center,
@@ -140,7 +140,7 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
               Transform(
                 alignment: Alignment.center,
                 transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.001)
+                  ..setEntry(3, 2, 0.0001)
                   ..rotateY(angle),
                 child: Opacity(
                   opacity: angle >= pi / 2 ? 0.0 : 1.0,
