@@ -66,6 +66,7 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
       animation: _animation,
       builder: (context, child) {
         final angle = (_animation.value - _animation.value ~/ 1) * pi;
+        final maskOpacity = _animation.value - _animation.value ~/ 1;
         final cellWidth = widget.cellSize.width;
         final cellHeight = widget.cellSize.height;
 
@@ -74,26 +75,8 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
           height: cellHeight,
           child: Stack(
             children: <Widget>[
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  width: cellWidth / 2,
-                  height: cellHeight,
-                  child: OverflowBox(
-                    minWidth: cellWidth / 2,
-                    maxWidth: cellWidth,
-                    child: ClipRect(
-                      child: Align(
-                        widthFactor: 0.5,
-                        alignment: Alignment.centerRight,
-                        child: getRightWidget(),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
               Offstage(
-                offstage: angle < pi / 2,
+                offstage: !(angle >= pi / 2),
                 child: Container(
                   width: cellWidth,
                   height: cellHeight,
@@ -109,27 +92,60 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
                   ),
                 ),
               ),
-              Transform(
-                alignment: Alignment.center,
-                transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.0001)
-                  ..rotateY(angle),
+              Offstage(
+                offstage: angle == 0,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    width: cellWidth / 2,
+                    height: cellHeight,
+                    child: OverflowBox(
+                      minWidth: cellWidth / 2,
+                      maxWidth: cellWidth,
+                      child: ClipRect(
+                        child: Align(
+                          widthFactor: 0.5,
+                          alignment: Alignment.centerRight,
+                          child: getRightWidget(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Offstage(
+                offstage: !(angle >= pi / 2),
                 child: Transform(
                   alignment: Alignment.center,
-                  transform: Matrix4.rotationY(pi),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      width: cellWidth / 2,
-                      height: cellHeight,
-                      child: OverflowBox(
-                        minWidth: cellWidth / 2,
-                        maxWidth: cellWidth,
-                        child: ClipRect(
-                          child: Align(
-                            widthFactor: 0.5,
-                            alignment: Alignment.centerLeft,
-                            child: getRightWidget(),
+                  transform: Matrix4.identity()
+                    ..setEntry(3, 2, 0.0001)
+                    ..rotateY(angle),
+                  child: Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.rotationY(pi),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        width: cellWidth / 2,
+                        height: cellHeight,
+                        child: OverflowBox(
+                          minWidth: cellWidth / 2,
+                          maxWidth: cellWidth,
+                          child: ClipRect(
+                            child: Align(
+                              widthFactor: 0.5,
+                              alignment: Alignment.centerLeft,
+                              child: Stack(
+                                children: [
+                                  getRightWidget() ?? SizedBox(),
+                                  if (getRightWidget() != null)
+                                    Container(
+                                      color: Colors.black12.withOpacity(1-maskOpacity),
+                                      constraints: BoxConstraints.expand(),
+                                    ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -137,13 +153,13 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
                   ),
                 ),
               ),
-              Transform(
-                alignment: Alignment.center,
-                transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.0001)
-                  ..rotateY(angle),
-                child: Opacity(
-                  opacity: angle >= pi / 2 ? 0.0 : 1.0,
+              Offstage(
+                offstage: angle >= pi / 2,
+                child: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.identity()
+                    ..setEntry(3, 2, 0.0001)
+                    ..rotateY(angle),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Container(
@@ -156,7 +172,15 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
                           child: Align(
                             widthFactor: 0.5,
                             alignment: Alignment.centerRight,
-                            child: getLeftWidget(),
+                            child: Stack(
+                              children: [
+                                getLeftWidget(),
+                                Container(
+                                  color: Colors.black12.withOpacity(maskOpacity),
+                                  constraints: BoxConstraints.expand(),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -208,19 +232,19 @@ class HorizontalFlipPageTurnController {
 
   void Function(int, Duration)? _toPositionCallback;
 
-  void animToLeftWidget({Duration duration = const Duration(milliseconds: 300)}) {
+  void animToLeftWidget({Duration duration = const Duration(milliseconds: 350)}) {
     if (_toLeftCallback != null) {
       _toLeftCallback!(duration);
     }
   }
 
-  void animToRightWidget({Duration duration = const Duration(milliseconds: 300)}) {
+  void animToRightWidget({Duration duration = const Duration(milliseconds: 350)}) {
     if (_toRightCallback != null) {
       _toRightCallback!(duration);
     }
   }
 
-  void animToPositionWidget(int position, {Duration duration = const Duration(milliseconds: 300)}) {
+  void animToPositionWidget(int position, {Duration duration = const Duration(milliseconds: 350)}) {
     if (_toPositionCallback != null) {
       _toPositionCallback!(position, duration);
     }

@@ -1,4 +1,3 @@
-
 import 'package:better_page_turn/better_page_turn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,39 +26,14 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      child: Column(
+      child: Wrap(
         children: [
           Container(
             child: Padding(
               padding: EdgeInsets.all(20.0),
               child: LayoutBuilder(builder: (context, constraints) {
                 return HorizontalFlipPageTurn(
-                  children: [
-                    _buildWidget(
-                      0,
-                      Colors.yellowAccent,
-                      horizontalFlipPageTurnController.animToLeftWidget,
-                      horizontalFlipPageTurnController.animToRightWidget,
-                    ),
-                    _buildWidget(
-                      1,
-                      Colors.purpleAccent,
-                      horizontalFlipPageTurnController.animToLeftWidget,
-                      horizontalFlipPageTurnController.animToRightWidget,
-                    ),
-                    _buildWidget(
-                      2,
-                      Colors.greenAccent,
-                      horizontalFlipPageTurnController.animToLeftWidget,
-                      horizontalFlipPageTurnController.animToRightWidget,
-                    ),
-                    _buildWidget(
-                      3,
-                      Colors.pinkAccent,
-                      horizontalFlipPageTurnController.animToLeftWidget,
-                      horizontalFlipPageTurnController.animToRightWidget,
-                    ),
-                  ],
+                  children: [Colors.pink.value, Colors.teal.value, Colors.orange.value, Colors.indigo.value].map((e) => _buildWidget(e, Color(e))).toList(),
                   cellSize: Size(constraints.maxWidth, 200),
                   controller: horizontalFlipPageTurnController,
                 );
@@ -71,32 +45,7 @@ class _MyAppState extends State<MyApp> {
               padding: EdgeInsets.all(20.0),
               child: LayoutBuilder(builder: (context, constraints) {
                 return SliderPageTurn(
-                  children: [
-                    _buildWidget(
-                      0,
-                      Colors.yellowAccent,
-                      sliderPageTurnController.animToLeftWidget,
-                      sliderPageTurnController.animToRightWidget,
-                    ),
-                    _buildWidget(
-                      1,
-                      Colors.purpleAccent,
-                      sliderPageTurnController.animToLeftWidget,
-                      sliderPageTurnController.animToRightWidget,
-                    ),
-                    _buildWidget(
-                      2,
-                      Colors.greenAccent,
-                      sliderPageTurnController.animToLeftWidget,
-                      sliderPageTurnController.animToRightWidget,
-                    ),
-                    _buildWidget(
-                      3,
-                      Colors.pinkAccent,
-                      sliderPageTurnController.animToLeftWidget,
-                      sliderPageTurnController.animToRightWidget,
-                    ),
-                  ],
+                  children: [Colors.pink.value, Colors.teal.value, Colors.orange.value, Colors.indigo.value].map((e) => _buildWidget(e, Color(e))).toList(),
                   cellSize: Size(constraints.maxWidth, 200),
                   controller: sliderPageTurnController,
                 );
@@ -104,14 +53,28 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           CupertinoButton(
-            child: Text("turn to 0"),
+            child: Text("turn left"),
+            onPressed: () {
+              horizontalFlipPageTurnController.animToLeftWidget();
+              sliderPageTurnController.animToLeftWidget();
+            },
+          ),
+          CupertinoButton(
+            child: Text("turn right"),
+            onPressed: () {
+              horizontalFlipPageTurnController.animToRightWidget();
+              sliderPageTurnController.animToRightWidget();
+            },
+          ),
+          CupertinoButton(
+            child: Text("turn 0 position"),
             onPressed: () {
               horizontalFlipPageTurnController.animToPositionWidget(0);
               sliderPageTurnController.animToPositionWidget(0);
             },
           ),
           CupertinoButton(
-            child: Text("turn to 3"),
+            child: Text("turn 3 position"),
             onPressed: () {
               horizontalFlipPageTurnController.animToPositionWidget(3);
               sliderPageTurnController.animToPositionWidget(3);
@@ -122,10 +85,9 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget _buildWidget(int position, Color color, VoidCallback leftPressed, VoidCallback rightPressed) {
+  Widget _buildWidget(int position, Color color) {
     return Container(
       color: color,
-      padding: EdgeInsets.only(top: 10),
       constraints: BoxConstraints.expand(),
       child: Stack(
         alignment: Alignment.topCenter,
@@ -133,30 +95,10 @@ class _MyAppState extends State<MyApp> {
           Align(
             alignment: Alignment.center,
             child: Text(
-              "$position",
+              "0x${position.toRadixString(16).toUpperCase()}",
               style: TextStyle(
                 color: Color(0xFF2e282a),
                 fontSize: 40.0,
-              ),
-            ),
-          ),
-          Positioned(
-            left: 10,
-            bottom: 10,
-            child: CupertinoButton(
-              onPressed: leftPressed,
-              child: Text(
-                "animToLeft",
-              ),
-            ),
-          ),
-          Positioned(
-            right: 10,
-            bottom: 10,
-            child: CupertinoButton(
-              onPressed: rightPressed,
-              child: Text(
-                "animToRight",
               ),
             ),
           ),

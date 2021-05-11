@@ -113,19 +113,19 @@ class SliderPageTurnController {
 
   void Function(int, Duration)? _toPositionCallback;
 
-  void animToLeftWidget({Duration duration = const Duration(milliseconds: 300)}) {
+  void animToLeftWidget({Duration duration = const Duration(milliseconds: 350)}) {
     if (_toLeftCallback != null) {
       _toLeftCallback!(duration);
     }
   }
 
-  void animToRightWidget({Duration duration = const Duration(milliseconds: 300)}) {
+  void animToRightWidget({Duration duration = const Duration(milliseconds: 350)}) {
     if (_toRightCallback != null) {
       _toRightCallback!(duration);
     }
   }
 
-  void animToPositionWidget(int position, {Duration duration = const Duration(milliseconds: 300)}) {
+  void animToPositionWidget(int position, {Duration duration = const Duration(milliseconds: 350)}) {
     if (_toPositionCallback != null) {
       _toPositionCallback!(position, duration);
     }

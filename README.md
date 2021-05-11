@@ -10,7 +10,7 @@ A simple Page Turn Widget for Flutter.
 
 ```yaml
 dependencies:
-  better_page_turn: ^0.0.3
+  better_page_turn: ^0.0.4
 ```
 
 2. Install it

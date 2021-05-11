@@ -6,3 +6,6 @@ fix some bugs.
 
 ## 0.0.3
 fix some bugs.
+
+## 0.0.4
+fix some bugs.
