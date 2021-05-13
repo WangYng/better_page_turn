@@ -139,9 +139,12 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
                                 children: [
                                   getRightWidget() ?? SizedBox(),
                                   if (getRightWidget() != null)
-                                    Container(
-                                      color: Colors.black12.withOpacity(1-maskOpacity),
-                                      constraints: BoxConstraints.expand(),
+                                    Offstage(
+                                      offstage: 1-maskOpacity == 0,
+                                      child: Container(
+                                        color: Colors.black12.withOpacity(1-maskOpacity),
+                                        constraints: BoxConstraints.expand(),
+                                      ),
                                     ),
                                 ],
                               ),
@@ -175,9 +178,12 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
                             child: Stack(
                               children: [
                                 getLeftWidget(),
-                                Container(
-                                  color: Colors.black12.withOpacity(maskOpacity),
-                                  constraints: BoxConstraints.expand(),
+                                Offstage(
+                                  offstage: maskOpacity == 0,
+                                  child: Container(
+                                    color: Colors.black12.withOpacity(maskOpacity),
+                                    constraints: BoxConstraints.expand(),
+                                  ),
                                 ),
                               ],
                             ),
