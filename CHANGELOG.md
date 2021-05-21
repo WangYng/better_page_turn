@@ -12,3 +12,6 @@ fix some bugs.
 
 ## 0.0.5
 fix some bugs.
+
+## 0.0.6
+fix some bugs.

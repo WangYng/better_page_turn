@@ -20,9 +20,9 @@ class HorizontalFlipPageTurn extends StatefulWidget {
   HorizontalFlipPageTurnState createState() => HorizontalFlipPageTurnState();
 }
 
-class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with SingleTickerProviderStateMixin {
+class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with TickerProviderStateMixin {
   late AnimationController _animationController;
-  late Animation<double> _animation = _animationController.drive(Tween(begin: 0.0, end: widget.children.length - 1));
+  late Animation<double> _animation;
 
   int position = 0;
 
@@ -31,6 +31,8 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
     super.initState();
 
     _animationController = AnimationController(vsync: this);
+    _animation = _animationController.drive(Tween(begin: 0.0, end: widget.children.length - 1));
+
     widget.controller._toLeftCallback = (duration) {
       if (position > 0) {
         position = position - 1;
@@ -52,6 +54,15 @@ class HorizontalFlipPageTurnState extends State<HorizontalFlipPageTurn> with Sin
         this.position = position;
       }
     };
+  }
+
+  @override
+  void didUpdateWidget(covariant HorizontalFlipPageTurn oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _animation = _animationController.drive(Tween(begin: 0.0, end: widget.children.length - 1));
+    if (this.position > widget.children.length - 1) {
+      this.position = widget.children.length - 1;
+    }
   }
 
   @override
